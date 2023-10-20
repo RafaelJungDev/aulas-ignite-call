@@ -1,14 +1,21 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Heading, MultiStep, Text, TextInput } from "@ignite-ui/react";
 import { AxiosError } from "axios";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight } from "phosphor-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { api } from "../../lib/axios";
 
+import { globalStyles } from "@/app/styles/global";
+
+globalStyles();
+
 import { Container, Form, FormError, Header } from "./styles";
+import { Router } from "next/router";
 
 const registerFormSchema = z.object({
   username: z
@@ -35,13 +42,14 @@ export default function Register() {
     resolver: zodResolver(registerFormSchema),
   });
 
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
-    if (router.query.username) {
-      setValue("username", String(router.query.username));
+    if (searchParams.has("username")) {
+      setValue("username", String(searchParams.get("username")));
     }
-  }, [router.query?.username, setValue]);
+  }, [searchParams.get("username"), setValue]);
 
   async function handleRegister(data: RegisterFormData) {
     try {
@@ -49,6 +57,7 @@ export default function Register() {
         name: data.name,
         username: data.username,
       });
+      await router.push("/register/connect-calendar");
     } catch (err) {
       if (err instanceof AxiosError && err?.response?.data?.message) {
         alert(err.response.data.message);
