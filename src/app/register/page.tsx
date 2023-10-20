@@ -1,14 +1,21 @@
 "use client";
 
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Heading, MultiStep, Text, TextInput } from "@ignite-ui/react";
 import { AxiosError } from "axios";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight } from "phosphor-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { api } from "../../lib/axios";
+
+import { globalStyles } from "@/app/styles/global";
+
+globalStyles();
 
 import { globalStyles } from "@/app/styles/global";
 
@@ -42,7 +49,6 @@ export default function Register() {
     resolver: zodResolver(registerFormSchema),
   });
 
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
