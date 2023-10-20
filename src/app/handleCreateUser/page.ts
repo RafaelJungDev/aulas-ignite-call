@@ -1,14 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { setCookie } from "nookies";
-import { prisma } from "../../../lib/prisma";
+import { prisma } from "../../lib/prisma";
+import { NextResponse } from "next/server";
 
-export default async function handler(
+export default async function Handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method !== "POST") {
     return res.status(405).end();
   }
+  const body = req.body;
+  console.log(body);
 
   const { name, username } = req.body;
 
