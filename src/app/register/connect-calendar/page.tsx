@@ -6,7 +6,6 @@ import { ArrowRight, Check } from "phosphor-react";
 import { Container, Header } from "../styles";
 import { AuthError, ConnectBox, ConnectItem } from "./styles";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
 
 import { globalStyles } from "@/app/styles/global";
@@ -25,6 +24,8 @@ export default function ConnectCalendar() {
   async function handleConnectCalendar() {
     await signIn("google");
   }
+
+  console.log(session);
 
   return (
     <Container>

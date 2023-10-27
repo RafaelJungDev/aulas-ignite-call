@@ -53,11 +53,22 @@ export default function Register() {
   }, [searchParams.get("username"), setValue]);
 
   async function handleRegister(data: RegisterFormData) {
+    const reqBody = { username: data.username, name: data.name };
+
     try {
+      // await fetch("/api/users", {
+      //   method: "POST",
+      //   body: JSON.stringify(reqBody),
+      // });
+      // await fetch("/api/users", {
+      //   method: "POST",
+      //   body: JSON.stringify(data),
+      // });
       await api.post("/users", {
         name: data.name,
         username: data.username,
       });
+
       await router.push("/register/connect-calendar");
     } catch (err) {
       if (err instanceof AxiosError && err?.response?.data?.message) {
