@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { NextApiRequest, NextApiResponse } from "next";
 import nookies from "nookies";
+import { cookies } from "next/headers";
+import serialize from "nookies";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   // const { name, username } = req.body;
@@ -87,6 +89,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     path: "/",
   });
 
+  console.log(user.id);
+
   // return new Response("OK", {
   //   status: 200,
   //   headers: { "Set-Cookie": `@ignitecall:userId=${user.id}` },
@@ -106,7 +110,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   //   return NextAuth(req, res, buildNextAuthOptions(req, res));
   // }
 
-  return res.status(201).json(user);
+  return new Response("", {
+    status: 200,
+    headers: {
+      "Set-Cookie": `@ignitecall:userId=${user.id}; max-age=${
+        60 * 60 * 24 * 7
+      }; path=/`,
+    },
+  });
 }
 
 export { handler as POST, handler as GET };
