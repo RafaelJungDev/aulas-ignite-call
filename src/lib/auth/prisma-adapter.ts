@@ -1,19 +1,17 @@
 import { Adapter } from "next-auth/adapters";
 import { prisma } from "../prisma";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse, NextPageContext } from "next";
 import { destroyCookie, parseCookies } from "nookies";
 import nookies from "nookies";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export function PrismaAdapter(
-  req: NextApiRequest,
-  res: NextApiResponse
+  req: NextApiRequest | NextPageContext["req"],
+  res: NextApiResponse | NextPageContext["res"]
 ): Adapter {
   return {
     async createUser(user) {
-      console.log(req.cookies);
-
       const cookiies = cookies();
 
       console.log(cookiies.get("@ignitecall:userId")?.value);

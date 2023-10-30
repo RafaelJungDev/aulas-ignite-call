@@ -10,6 +10,7 @@ import { SessionProvider, signIn, useSession } from "next-auth/react";
 
 import { globalStyles } from "@/app/styles/global";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 
 globalStyles();
 
@@ -17,12 +18,17 @@ export default function ConnectCalendar() {
   const session = useSession();
 
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const hasAuthError = searchParams.has("error");
   const isSignedId = session.status === "authenticated";
 
   async function handleConnectCalendar() {
     await signIn("google");
+  }
+
+  async function handleNavigateToNextStep() {
+    await router.push("/register/time-intervals");
   }
 
   console.log(session);
@@ -66,7 +72,11 @@ export default function ConnectCalendar() {
           </AuthError>
         )}
 
-        <Button type="submit" disabled={!isSignedId}>
+        <Button
+          onClick={handleNavigateToNextStep}
+          type="submit"
+          disabled={!isSignedId}
+        >
           Próximo passo
           <ArrowRight />
         </Button>
